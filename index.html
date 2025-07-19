@@ -101,30 +101,56 @@
           50% + 40px + 1rem
         ); /* Ajusté pour être sous l'icône de son, mais toujours visible */
         transform: translateY(-50%); /* Ajuste le centrage vertical */
-        background-color: transparent; /* Fond transparent pour laisser l'image apparaître */
-        border: none; /* Pas de bordure */
-        padding: 0; /* Pas de rembourrage */
-        border-radius: 0.5rem; /* Bords légèrement arrondis */
-        cursor: pointer; /* Indique que l'élément est cliquable */
-        transition: opacity 0.5s ease-in-out, transform 0.2s ease-in-out; /* Transitions */
-        opacity: 0; /* Initialement invisible */
-        pointer-events: none; /* Désactive les interactions de la souris quand invisible */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(
+          255,
+          255,
+          255,
+          0.9
+        ); /* Fond semi-transparent comme les autres icônes */
+        padding: 0.5rem; /* Espacement interne comme les autres icônes */
+        border-radius: 0.5rem; /* Bords arrondis comme les autres icônes */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* Ombre légère comme les autres icônes */
+        transition: opacity 0.5s ease-in-out, transform 0.2s ease-in-out; /* Transitions pour l'apparition/disparition et le survol */
+        text-align: center;
+        color: #333;
+        font-size: 0.75rem;
         width: 80px; /* Largeur du bouton */
         height: 80px; /* Hauteur du bouton */
-        z-index: 9999; /* Z-index très élevé pour être toujours au-dessus */
+        cursor: pointer; /* Indique que l'élément est cliquable */
+        opacity: 0; /* Initialement invisible */
+        pointer-events: none; /* Désactive les interactions de la souris quand invisible */
+        z-index: 10000; /* Z-index très élevé pour être toujours au-dessus de la vidéo */
       }
       .enter-button img {
         width: 100%; /* L'image remplit le bouton */
         height: 100%;
-        object-fit: contain;
+        object-fit: contain; /* L'image s'adapte sans être coupée */
+        filter: contrast(
+          1.2
+        ); /* Améliore le contraste de l'image comme les autres icônes */
         transition: transform 0.2s ease-in-out; /* Transition pour l'effet de survol */
       }
       .enter-button:hover {
-        transform: scale(1.1); /* Agrandit légèrement au survol */
+        transform: scale(
+          1.1
+        ); /* Agrandit légèrement au survol comme les autres icônes */
+        background-color: rgba(
+          255,
+          255,
+          255,
+          0.95
+        ); /* Légèrement plus opaque au survol comme les autres icônes */
       }
       .enter-button:hover img {
-        transform: scale(1.05); /* L'image à l'intérieur s'agrandit aussi */
+        transform: scale(
+          1.05
+        ); /* L'image à l'intérieur s'agrandit aussi comme les autres icônes */
       }
+
       /* Classe pour rendre le bouton visible */
       .enter-button.visible {
         opacity: 1; /* Rend l'élément complètement opaque */
@@ -163,13 +189,8 @@
     <div class="video-container">
       <!-- Élément vidéo -->
       <video id="myVideo" controls playsinline>
-        <!-- Source vidéo de test (fonctionne généralement bien) -->
-        <source
-          src="https://www.w3schools.com/html/mov_bbb.mp4"
-          type="video/mp4"
-        />
-        <!-- Votre vidéo personnalisée (commentée car elle pourrait ne pas fonctionner en raison des restrictions de domaine) -->
-        <!-- <source src="https://raw.githubusercontent.com/Drane06/Savethedate/main/std.mp4" type="video/mp4"> -->
+        <!-- Source vidéo locale -->
+        <source src="save the date 6.mp4" type="video/mp4" />
         Votre navigateur ne prend pas en charge la balise vidéo.
       </video>
     </div>
@@ -177,27 +198,18 @@
     <div class="icon-sidebar">
       <!-- Icône de haut-parleur -->
       <div id="speakerIcon" class="icon-item">
-        <img
-          src="https://raw.githubusercontent.com/Drane06/Savethedate/main/son.png"
-          alt="Icône de son"
-        />
+        <img src="son.png" alt="Icône de son" />
       </div>
 
       <!-- Icône de rotation d'écran -->
       <div id="rotateIcon" class="icon-item">
-        <img
-          src="https://raw.githubusercontent.com/Drane06/Savethedate/main/tournez.png"
-          alt="Icône de rotation"
-        />
+        <img src="tournez.png" alt="Icône de rotation" />
       </div>
     </div>
 
     <!-- Bouton "Entrez" (initialement invisible, apparaît à la fin de la vidéo) -->
     <button id="enterButton" class="enter-button">
-      <img
-        src="https://raw.githubusercontent.com/Drane06/Savethedate/main/entrez.png"
-        alt="Bouton Entrez"
-      />
+      <img src="entrez.png" alt="Bouton Entrez" />
     </button>
 
     <script>
