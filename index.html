@@ -3,232 +3,296 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lucidia - Votre Partenaire de Confiance</title>
-    <meta
-      name="description"
-      content="Lucidia, votre partenaire de confiance pour des solutions innovantes et durables. Découvrez nos services et notre expertise."
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="styles.css" />
+    <title>Page Vidéo Interactive</title>
+    <!-- Chargement de Tailwind CSS pour un style minimaliste et responsive -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* Styles de base pour le corps de la page */
+      body {
+        font-family: "Inter", sans-serif; /* Police moderne */
+        background-color: white; /* Fond blanc comme demandé */
+        overflow: hidden; /* Empêche le défilement indésirable */
+        display: flex; /* Utilise flexbox pour le centrage */
+        justify-content: center; /* Centre horizontalement */
+        align-items: center; /* Centre verticalement */
+        min-height: 100vh; /* Prend toute la hauteur de la fenêtre */
+      }
+      /* Conteneur de la vidéo pour gérer la taille et le ratio */
+      .video-container {
+        position: relative;
+        width: 90vw; /* Largeur fluide par rapport à la vue */
+        max-width: 800px; /* Largeur maximale pour les grands écrans */
+        aspect-ratio: 16 / 9; /* Maintient un ratio 16:9 pour la vidéo */
+        background-color: #000; /* Fond noir derrière la vidéo */
+        border-radius: 1rem; /* Bords arrondis pour l'esthétique */
+        overflow: hidden; /* Cache tout débordement de la vidéo */
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); /* Ombre douce pour un effet de profondeur */
+      }
+      /* Style de l'élément vidéo lui-même */
+      video {
+        width: 100%; /* Remplir la largeur du conteneur */
+        height: 100%;
+        object-fit: cover; /* Assure que la vidéo couvre le conteneur sans déformation */
+        display: block; /* Supprime l'espace supplémentaire sous la vidéo */
+      }
+      /* Barre latérale pour les icônes temporaires (son, rotation) */
+      .icon-sidebar {
+        position: fixed; /* Position fixe par rapport à la fenêtre */
+        right: 30px; /* Marge fixe de 30px depuis le bord droit */
+        top: 50%; /* Positionne le haut au milieu de la fenêtre */
+        transform: translateY(
+          -50%
+        ); /* Ajuste pour centrer parfaitement verticalement */
+        display: flex; /* Utilise flexbox pour aligner les icônes verticalement */
+        flex-direction: column; /* Disposition verticale */
+        gap: 1rem; /* Espacement entre les icônes */
+        z-index: 9998; /* Z-index élevé, mais inférieur au bouton Entrez si superposé */
+      }
+      /* Style générique pour chaque élément d'icône (son, rotation) */
+      .icon-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(255, 255, 255, 0.9); /* Fond semi-transparent */
+        padding: 0.5rem; /* Espacement interne */
+        border-radius: 0.5rem; /* Bords arrondis */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* Ombre légère */
+        transition: opacity 0.5s ease-in-out, transform 0.2s ease-in-out; /* Transitions pour l'apparition/disparition et le survol */
+        text-align: center;
+        color: #333;
+        font-size: 0.75rem;
+        width: 80px; /* Largeur fixe pour les icônes */
+        height: 80px; /* Hauteur fixe pour les icônes */
+        cursor: pointer; /* Indique que l'élément est cliquable */
+      }
+      .icon-item:hover {
+        transform: scale(1.1); /* Agrandit légèrement au survol */
+        background-color: rgba(
+          255,
+          255,
+          255,
+          0.95
+        ); /* Légèrement plus opaque au survol */
+      }
+      /* Style pour les images à l'intérieur des éléments d'icône */
+      .icon-item img {
+        width: 100%; /* L'image remplit l'élément parent */
+        height: 100%;
+        object-fit: contain; /* L'image s'adapte sans être coupée */
+        filter: contrast(1.2); /* Améliore le contraste de l'image */
+      }
+      /* Classe pour masquer les éléments */
+      .icon-item.hidden {
+        opacity: 0; /* Rend l'élément complètement transparent */
+        pointer-events: none; /* Désactive les interactions de la souris */
+      }
+      /* Classe pour l'animation de fondu */
+      .fade-out {
+        opacity: 0;
+        transition: opacity 1s ease-out; /* Transition de fondu douce */
+      }
+      /* Style du bouton "Entrez" - Maintenant positionné indépendamment */
+      .enter-button {
+        position: absolute; /* Positionnement absolu pour un contrôle précis */
+        right: 30px; /* Marge fixe de 30px depuis le bord droit */
+        /* Calcul pour positionner le bouton à la place de l'icône de rotation */
+        top: calc(
+          50% + 40px + 1rem
+        ); /* Ajusté pour être sous l'icône de son, mais toujours visible */
+        transform: translateY(-50%); /* Ajuste le centrage vertical */
+        background-color: transparent; /* Fond transparent pour laisser l'image apparaître */
+        border: none; /* Pas de bordure */
+        padding: 0; /* Pas de rembourrage */
+        border-radius: 0.5rem; /* Bords légèrement arrondis */
+        cursor: pointer; /* Indique que l'élément est cliquable */
+        transition: opacity 0.5s ease-in-out, transform 0.2s ease-in-out; /* Transitions */
+        opacity: 0; /* Initialement invisible */
+        pointer-events: none; /* Désactive les interactions de la souris quand invisible */
+        width: 80px; /* Largeur du bouton */
+        height: 80px; /* Hauteur du bouton */
+        z-index: 9999; /* Z-index très élevé pour être toujours au-dessus */
+      }
+      .enter-button img {
+        width: 100%; /* L'image remplit le bouton */
+        height: 100%;
+        object-fit: contain;
+        transition: transform 0.2s ease-in-out; /* Transition pour l'effet de survol */
+      }
+      .enter-button:hover {
+        transform: scale(1.1); /* Agrandit légèrement au survol */
+      }
+      .enter-button:hover img {
+        transform: scale(1.05); /* L'image à l'intérieur s'agrandit aussi */
+      }
+      /* Classe pour rendre le bouton visible */
+      .enter-button.visible {
+        opacity: 1; /* Rend l'élément complètement opaque */
+        pointer-events: auto; /* Active les interactions de la souris */
+      }
+
+      /* Media queries pour la responsivité sur les petits écrans (mobiles) */
+      @media (max-width: 768px) {
+        .video-container {
+          width: 95vw; /* Plus large sur mobile */
+          max-width: none; /* Pas de largeur maximale sur mobile */
+        }
+        .icon-sidebar {
+          right: 15px; /* Marge fixe de 15px sur mobile (ajustée) */
+          gap: 0.75rem; /* Espacement réduit */
+        }
+        .icon-item {
+          padding: 0.4rem;
+          width: 60px; /* Taille des icônes réduite sur mobile */
+          height: 60px;
+        }
+        .icon-item img {
+          width: 100%; /* L'image remplit l'élément parent sur mobile */
+          height: 100%;
+        }
+        .enter-button {
+          right: 15px; /* Marge fixe de 15px sur mobile */
+          top: calc(50% + 30px + 0.75rem); /* Ajusté pour mobile */
+          width: 60px; /* Taille du bouton "Entrez" réduite sur mobile */
+          height: 60px;
+        }
+      }
+    </style>
   </head>
   <body>
-    <!-- Header -->
-    <header>
-      <nav>
-        <a href="#" class="logo">Lucidia</a>
-        <ul class="nav-links">
-          <li><a href="#accueil">Accueil</a></li>
-          <li><a href="#a-propos">À Propos</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-        <div class="mobile-menu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </nav>
-    </header>
+    <div class="video-container">
+      <!-- Élément vidéo -->
+      <video id="myVideo" controls playsinline>
+        <!-- Source vidéo de test (fonctionne généralement bien) -->
+        <source
+          src="https://www.w3schools.com/html/mov_bbb.mp4"
+          type="video/mp4"
+        />
+        <!-- Votre vidéo personnalisée (commentée car elle pourrait ne pas fonctionner en raison des restrictions de domaine) -->
+        <!-- <source src="https://raw.githubusercontent.com/Drane06/Savethedate/main/std.mp4" type="video/mp4"> -->
+        Votre navigateur ne prend pas en charge la balise vidéo.
+      </video>
+    </div>
 
-    <!-- Hero Section -->
-    <section id="accueil" class="hero">
-      <div class="hero-content fade-in-up">
-        <h1>Bienvenue chez Lucidia</h1>
-        <p>
-          Votre partenaire de confiance pour des solutions innovantes et
-          durables. Nous transformons vos idées en réalité avec expertise et
-          passion.
-        </p>
-        <a href="#contact" class="cta-button">Découvrir Nos Services</a>
+    <div class="icon-sidebar">
+      <!-- Icône de haut-parleur -->
+      <div id="speakerIcon" class="icon-item">
+        <img
+          src="https://raw.githubusercontent.com/Drane06/Savethedate/main/son.png"
+          alt="Icône de son"
+        />
       </div>
-    </section>
 
-    <!-- About Section -->
-    <section id="a-propos" class="about">
-      <div class="container">
-        <h2 class="section-title">À Propos de Lucidia</h2>
-        <div class="about-content">
-          <div class="about-text">
-            <h3>Notre Mission</h3>
-            <p>
-              Chez Lucidia, nous croyons en la puissance de l'innovation et de
-              la collaboration. Notre mission est de fournir des solutions de
-              qualité qui répondent aux défis actuels et futurs de nos clients.
-            </p>
-            <p>
-              Fondée sur des valeurs d'excellence, d'intégrité et de durabilité,
-              notre entreprise s'engage à créer un impact positif dans tous les
-              projets que nous entreprenons.
-            </p>
-            <p>
-              Avec une équipe d'experts passionnés et une approche centrée sur
-              le client, nous transformons vos visions en succès concrets.
-            </p>
-          </div>
-          <div class="about-image">
-            <span>Lucidia</span>
-          </div>
-        </div>
+      <!-- Icône de rotation d'écran -->
+      <div id="rotateIcon" class="icon-item">
+        <img
+          src="https://raw.githubusercontent.com/Drane06/Savethedate/main/tournez.png"
+          alt="Icône de rotation"
+        />
       </div>
-    </section>
+    </div>
 
-    <!-- Services Section -->
-    <section id="services">
-      <div class="container">
-        <h2 class="section-title">Nos Services</h2>
-        <div class="services-grid">
-          <div class="service-card">
-            <div class="service-icon">💡</div>
-            <h4>Consultation Stratégique</h4>
-            <p>
-              Nous vous accompagnons dans la définition et la mise en œuvre de
-              votre stratégie d'entreprise avec des solutions personnalisées et
-              innovantes.
-            </p>
-          </div>
-          <div class="service-card">
-            <div class="service-icon">🚀</div>
-            <h4>Innovation & Développement</h4>
-            <p>
-              Transformez vos idées en produits et services révolutionnaires
-              grâce à notre expertise en développement et innovation
-              technologique.
-            </p>
-          </div>
-          <div class="service-card">
-            <div class="service-icon">🤝</div>
-            <h4>Partnership & Collaboration</h4>
-            <p>
-              Créez des synergies puissantes avec nos services de partenariat et
-              de collaboration inter-entreprises.
-            </p>
-          </div>
-          <div class="service-card">
-            <div class="service-icon">📊</div>
-            <h4>Analyse & Optimisation</h4>
-            <p>
-              Optimisez vos processus et performances grâce à nos analyses
-              approfondies et nos recommandations stratégiques.
-            </p>
-          </div>
-          <div class="service-card">
-            <div class="service-icon">🌱</div>
-            <h4>Solutions Durables</h4>
-            <p>
-              Intégrez la durabilité dans votre modèle d'affaires avec nos
-              solutions respectueuses de l'environnement.
-            </p>
-          </div>
-          <div class="service-card">
-            <div class="service-icon">🎯</div>
-            <h4>Formation & Accompagnement</h4>
-            <p>
-              Développez les compétences de vos équipes avec nos programmes de
-              formation et d'accompagnement sur mesure.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
+    <!-- Bouton "Entrez" (initialement invisible, apparaît à la fin de la vidéo) -->
+    <button id="enterButton" class="enter-button">
+      <img
+        src="https://raw.githubusercontent.com/Drane06/Savethedate/main/entrez.png"
+        alt="Bouton Entrez"
+      />
+    </button>
 
-    <!-- Contact Section -->
-    <section id="contact" class="contact">
-      <div class="container">
-        <h2 class="section-title">Contactez-Nous</h2>
-        <div class="contact-content">
-          <div class="contact-info">
-            <h3>Parlons de Votre Projet</h3>
-            <p>
-              Prêt à transformer vos idées en réalité ? Contactez-nous pour
-              discuter de votre projet et découvrir comment Lucidia peut vous
-              accompagner vers le succès.
-            </p>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const video = document.getElementById("myVideo");
+        const speakerIcon = document.getElementById("speakerIcon");
+        const rotateIcon = document.getElementById("rotateIcon");
+        const enterButton = document.getElementById("enterButton"); // Référence au bouton "Entrez"
 
-            <div class="contact-item">
-              <i>📧</i>
-              <div>
-                <strong>Email</strong><br />
-                contact@lucidia.com
-              </div>
-            </div>
+        let speakerTimeout; // Pour stocker l'ID du timeout du haut-parleur
+        let rotateTimeout; // Pour stocker l'ID du timeout de rotation
+        let buttonShown = false; // Drapeau pour s'assurer que le bouton n'apparaît qu'une fois
 
-            <div class="contact-item">
-              <i>📞</i>
-              <div>
-                <strong>Téléphone</strong><br />
-                +33 1 23 45 67 89
-              </div>
-            </div>
+        // Fonction utilitaire pour masquer un élément avec une transition de fondu
+        const hideElement = (element) => {
+          element.classList.add("fade-out");
+          setTimeout(() => {
+            element.classList.add("hidden"); // Cache complètement après la transition
+          }, 1000); // Correspond à la durée de la transition CSS (1s)
+        };
 
-            <div class="contact-item">
-              <i>📍</i>
-              <div>
-                <strong>Adresse</strong><br />
-                123 Avenue de l'Innovation<br />
-                75001 Paris, France
-              </div>
-            </div>
-          </div>
+        // Fonction pour afficher les icônes temporaires et les masquer après un délai
+        const showTemporaryIcons = () => {
+          // Annuler les timeouts précédents si la vidéo est rejouée rapidement
+          clearTimeout(speakerTimeout);
+          clearTimeout(rotateTimeout);
 
-          <div class="contact-form">
-            <form>
-              <div class="form-group">
-                <label for="name">Nom complet</label>
-                <input type="text" id="name" name="name" required />
-              </div>
+          // Rendre les icônes visibles et supprimer les classes de masquage
+          speakerIcon.classList.remove("hidden", "fade-out");
+          rotateIcon.classList.remove("hidden", "fade-out");
 
-              <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required />
-              </div>
+          // Masquer l'icône de haut-parleur après 3 secondes
+          speakerTimeout = setTimeout(() => {
+            hideElement(speakerIcon);
+          }, 3000); // 3 secondes
 
-              <div class="form-group">
-                <label for="company">Entreprise</label>
-                <input type="text" id="company" name="company" />
-              </div>
+          // Masquer l'icône de rotation après 3 secondes
+          rotateTimeout = setTimeout(() => {
+            hideElement(rotateIcon);
+          }, 3000); // 3 secondes
+        };
 
-              <div class="form-group">
-                <label for="message">Message</label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows="5"
-                  required
-                ></textarea>
-              </div>
+        // Masquer le bouton Entrez au début de chaque lecture
+        const hideEnterButton = () => {
+          enterButton.classList.remove("visible");
+          enterButton.classList.add("hidden"); // Assurer qu'il est bien caché
+          enterButton.style.opacity = "0"; // Forcer l'opacité à 0
+          enterButton.style.pointerEvents = "none"; // Désactiver les clics
+          buttonShown = false; // Réinitialiser le drapeau
+        };
 
-              <button type="submit" class="submit-btn">
-                Envoyer le Message
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
+        // Initialisation au chargement de la page
+        hideEnterButton(); // Le bouton Entrez est caché par défaut
 
-    <!-- Footer -->
-    <footer>
-      <div class="footer-content">
-        <div class="footer-links">
-          <a href="#accueil">Accueil</a>
-          <a href="#a-propos">À Propos</a>
-          <a href="#services">Services</a>
-          <a href="#contact">Contact</a>
-        </div>
-        <div class="footer-bottom">
-          <p>
-            &copy; 2024 Lucidia. Tous droits réservés. | Votre partenaire de
-            confiance pour l'innovation et le succès.
-          </p>
-        </div>
-      </div>
-    </footer>
+        // Écouter l'événement 'play' de la vidéo
+        video.addEventListener("play", () => {
+          console.log(
+            "Vidéo en lecture, affichage des icônes temporaires et masquage du bouton Entrez"
+          );
+          showTemporaryIcons();
+          hideEnterButton(); // S'assurer que le bouton Entrez est caché au début de la lecture
+        });
 
-    <script src="script.js"></script>
+        // Écouter l'événement 'timeupdate' (mise à jour du temps de lecture)
+        video.addEventListener("timeupdate", () => {
+          // Vérifier si la vidéo est suffisamment proche de la fin
+          // et si le bouton n'a pas déjà été affiché
+          if (video.duration - video.currentTime <= 2 && !buttonShown) {
+            console.log(
+              "2 secondes avant la fin de la vidéo, affichage du bouton Entrez"
+            );
+            enterButton.classList.remove("hidden"); // Supprimer la classe hidden
+            enterButton.classList.add("visible"); // Rendre le bouton "Entrez" visible
+            enterButton.style.opacity = "1"; // Forcer l'opacité à 1
+            enterButton.style.pointerEvents = "auto"; // Activer les clics
+            buttonShown = true; // Définir le drapeau pour éviter les affichages répétés
+          }
+        });
+
+        // Gérer le clic sur le bouton "Entrez"
+        enterButton.addEventListener("click", () => {
+          console.log(
+            "Bouton Entrez cliqué, redirection vers le site du mariage"
+          );
+          window.location.href =
+            "https://lola-marc-save-the-date.my.canva.site/wedding"; // Redirige vers le lien spécifié
+        });
+
+        // Pour le cas où la vidéo serait en autoplay et commencerait avant le 'play' event
+        // Ou si l'utilisateur met en pause et rejoue rapidement
+        // On peut aussi déclencher showTemporaryIcons() si la vidéo est déjà en lecture au DOMContentLoaded
+        if (!video.paused && !video.ended && video.readyState > 2) {
+          showTemporaryIcons();
+        }
+      });
+    </script>
   </body>
 </html>
