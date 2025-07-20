@@ -49,11 +49,26 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialisation au chargement de la page
   hideEnterButton(); // Le bouton Entrez est caché par défaut
 
+  // Démarrer automatiquement la vidéo au chargement de la page
+  const startVideo = async () => {
+    try {
+      await video.play();
+      console.log("Vidéo démarrée automatiquement");
+    } catch (error) {
+      console.log("Impossible de démarrer automatiquement la vidéo:", error);
+    }
+  };
+
+  // Démarrer la vidéo après un court délai pour s'assurer que tout est chargé
+  setTimeout(startVideo, 100);
+
   // Écouter l'événement 'play' de la vidéo
   video.addEventListener("play", () => {
     console.log(
       "Vidéo en lecture, affichage des icônes temporaires et masquage du bouton Entrez"
     );
+    // Activer le son automatiquement quand la vidéo commence
+    video.muted = false;
     showTemporaryIcons();
     hideEnterButton(); // S'assurer que le bouton Entrez est caché au début de la lecture
   });
