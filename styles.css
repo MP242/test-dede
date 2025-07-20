@@ -1,791 +1,188 @@
-/* Variables CSS pour une meilleure maintenance */
-:root {
-  --primary-color: #667eea;
-  --secondary-color: #764ba2;
-  --accent-color: #f093fb;
-  --text-primary: #2d3748;
-  --text-secondary: #4a5568;
-  --text-light: #718096;
-  --bg-primary: #ffffff;
-  --bg-secondary: #f7fafc;
-  --bg-dark: #1a202c;
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.1);
-  --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.1);
-  --gradient-primary: linear-gradient(
-    135deg,
-    var(--primary-color) 0%,
-    var(--secondary-color) 100%
-  );
-  --gradient-accent: linear-gradient(
-    135deg,
-    var(--accent-color) 0%,
-    var(--primary-color) 100%
-  );
-  --border-radius: 12px;
-  --border-radius-lg: 20px;
-  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Reset et styles de base améliorés */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
+/* Styles de base pour le corps de la page */
 body {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    sans-serif;
-  line-height: 1.7;
-  color: var(--text-primary);
-  overflow-x: hidden;
-  background-color: var(--bg-primary);
-  font-size: 16px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: "Inter", sans-serif; /* Police moderne */
+  background-color: white; /* Fond blanc comme demandé */
+  overflow: hidden; /* Empêche le défilement indésirable */
+  display: flex; /* Utilise flexbox pour le centrage */
+  justify-content: center; /* Centre horizontalement */
+  align-items: center; /* Centre verticalement */
+  min-height: 100vh; /* Prend toute la hauteur de la fenêtre */
 }
 
-/* Header amélioré avec glassmorphism */
-header {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  color: var(--text-primary);
-  padding: 1rem 0;
-  position: fixed;
-  width: 100%;
-  top: 0;
-  z-index: 1000;
-  box-shadow: var(--shadow-sm);
-  transition: var(--transition);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-header.scrolled {
-  background: rgba(255, 255, 255, 0.98);
-  box-shadow: var(--shadow-lg);
-}
-
-nav {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo {
-  font-size: 1.8rem;
-  font-weight: 800;
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-decoration: none;
+/* Conteneur de la vidéo pour gérer la taille et le ratio */
+.video-container {
   position: relative;
+  width: 90vw; /* Largeur fluide par rapport à la vue */
+  max-width: 800px; /* Largeur maximale pour les grands écrans */
+  aspect-ratio: 16 / 9; /* Maintient un ratio 16:9 pour la vidéo */
+  background-color: #000; /* Fond noir derrière la vidéo */
+  border-radius: 1rem; /* Bords arrondis pour l'esthétique */
+  overflow: hidden; /* Cache tout débordement de la vidéo */
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); /* Ombre douce pour un effet de profondeur */
 }
 
-.logo::after {
-  content: "";
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: var(--gradient-primary);
-  transition: var(--transition);
+/* Style de l'élément vidéo lui-même */
+video {
+  width: 100%; /* Remplir la largeur du conteneur */
+  height: 100%;
+  object-fit: cover; /* Assure que la vidéo couvre le conteneur sans déformation */
+  display: block; /* Supprime l'espace supplémentaire sous la vidéo */
 }
 
-.logo:hover::after {
-  width: 100%;
+/* Barre latérale pour les icônes temporaires (son, rotation) */
+.icon-sidebar {
+  position: fixed; /* Position fixe par rapport à la fenêtre */
+  right: 30px; /* Marge fixe de 30px depuis le bord droit */
+  top: 50%; /* Positionne le haut au milieu de la fenêtre */
+  transform: translateY(
+    -50%
+  ); /* Ajuste pour centrer parfaitement verticalement */
+  display: flex; /* Utilise flexbox pour aligner les icônes verticalement */
+  flex-direction: column; /* Disposition verticale */
+  gap: 1rem; /* Espacement entre les icônes */
+  z-index: 9998; /* Z-index élevé, mais inférieur au bouton Entrez si superposé */
 }
 
-.nav-links {
+/* Style générique pour chaque élément d'icône (son, rotation) */
+.icon-item {
   display: flex;
-  list-style: none;
-  gap: 2.5rem;
-}
-
-.nav-links a {
-  color: var(--text-primary);
-  text-decoration: none;
-  font-weight: 500;
-  position: relative;
-  padding: 0.5rem 0;
-  transition: var(--transition);
-}
-
-.nav-links a::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: var(--gradient-primary);
-  transition: var(--transition);
-}
-
-.nav-links a:hover::after {
-  width: 100%;
-}
-
-.nav-links a:hover {
-  color: var(--primary-color);
-}
-
-.mobile-menu {
-  display: none;
   flex-direction: column;
-  cursor: pointer;
-  padding: 0.5rem;
-}
-
-.mobile-menu span {
-  width: 25px;
-  height: 3px;
-  background: var(--text-primary);
-  margin: 3px 0;
-  transition: var(--transition);
-  border-radius: 2px;
-}
-
-.mobile-menu:hover span {
-  background: var(--primary-color);
-}
-
-/* Hero Section améliorée */
-.hero {
-  background: var(--gradient-primary);
-  position: relative;
-  color: white;
-  padding: 140px 0 100px;
-  text-align: center;
-  min-height: 100vh;
-  display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.9); /* Fond semi-transparent */
+  padding: 0.5rem; /* Espacement interne */
+  border-radius: 0.5rem; /* Bords arrondis */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* Ombre légère */
+  transition: opacity 0.5s ease-in-out, transform 0.2s ease-in-out; /* Transitions pour l'apparition/disparition et le survol */
+  text-align: center;
+  color: #333;
+  font-size: 0.75rem;
+  width: 80px; /* Largeur fixe pour les icônes */
+  height: 80px; /* Hauteur fixe pour les icônes */
+  cursor: pointer; /* Indique que l'élément est cliquable */
 }
 
-.hero::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,255,255,0.1)" points="0,1000 1000,0 1000,1000"/></svg>');
-  background-size: cover;
-  opacity: 0.1;
+.icon-item:hover {
+  transform: scale(1.1); /* Agrandit légèrement au survol */
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.95
+  ); /* Légèrement plus opaque au survol */
 }
 
-.hero-content {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 0 2rem;
-  position: relative;
-  z-index: 2;
-}
-
-.hero h1 {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 800;
-  margin-bottom: 1.5rem;
-  line-height: 1.1;
-  background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: fadeInUp 1s ease-out;
-}
-
-.hero p {
-  font-size: clamp(1.1rem, 2vw, 1.4rem);
-  margin-bottom: 2.5rem;
-  opacity: 0.95;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  animation: fadeInUp 1s ease-out 0.2s both;
-}
-
-.cta-button {
-  display: inline-block;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  color: var(--primary-color);
-  padding: 1.2rem 2.5rem;
-  border-radius: 50px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1.1rem;
-  transition: var(--transition);
-  box-shadow: var(--shadow-lg);
-  position: relative;
-  overflow: hidden;
-  animation: fadeInUp 1s ease-out 0.4s both;
-}
-
-.cta-button::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
+/* Style pour les images à l'intérieur des éléments d'icône */
+.icon-item img {
+  width: 100%; /* L'image remplit l'élément parent */
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.4),
-    transparent
-  );
-  transition: var(--transition);
+  object-fit: contain; /* L'image s'adapte sans être coupée */
+  filter: contrast(1.2); /* Améliore le contraste de l'image */
 }
 
-.cta-button:hover::before {
-  left: 100%;
+/* Classe pour masquer les éléments */
+.icon-item.hidden {
+  opacity: 0; /* Rend l'élément complètement transparent */
+  pointer-events: none; /* Désactive les interactions de la souris */
 }
 
-.cta-button:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-xl);
-  background: rgba(255, 255, 255, 1);
+/* Classe pour l'animation de fondu */
+.fade-out {
+  opacity: 0;
+  transition: opacity 1s ease-out; /* Transition de fondu douce */
 }
 
-/* Sections améliorées */
-section {
-  padding: 100px 0;
-  position: relative;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
-}
-
-.section-title {
+/* Style du bouton "Entrez" - Maintenant positionné indépendamment */
+.enter-button {
+  position: absolute; /* Positionnement absolu pour un contrôle précis */
+  right: 30px; /* Marge fixe de 30px depuis le bord droit */
+  /* Calcul pour positionner le bouton à la place de l'icône de rotation */
+  top: calc(
+    50% + 40px + 1rem
+  ); /* Ajusté pour être sous l'icône de son, mais toujours visible */
+  transform: translateY(-50%); /* Ajuste le centrage vertical */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.9
+  ); /* Fond semi-transparent comme les autres icônes */
+  padding: 0.5rem; /* Espacement interne comme les autres icônes */
+  border-radius: 0.5rem; /* Bords arrondis comme les autres icônes */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* Ombre légère comme les autres icônes */
+  transition: opacity 0.5s ease-in-out, transform 0.2s ease-in-out; /* Transitions pour l'apparition/disparition et le survol */
   text-align: center;
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 700;
-  margin-bottom: 4rem;
-  color: var(--text-primary);
-  position: relative;
+  color: #333;
+  font-size: 0.75rem;
+  width: 80px; /* Largeur du bouton */
+  height: 80px; /* Hauteur du bouton */
+  cursor: pointer; /* Indique que l'élément est cliquable */
+  opacity: 0; /* Initialement invisible */
+  pointer-events: none; /* Désactive les interactions de la souris quand invisible */
+  z-index: 10000; /* Z-index très élevé pour être toujours au-dessus de la vidéo */
 }
 
-.section-title::after {
-  content: "";
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80px;
-  height: 4px;
-  background: var(--gradient-primary);
-  border-radius: 2px;
-}
-
-/* About Section améliorée */
-.about {
-  background: var(--bg-secondary);
-  position: relative;
-}
-
-.about::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 100px;
-  background: linear-gradient(to bottom, var(--bg-primary), transparent);
-}
-
-.about-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 5rem;
-  align-items: center;
-}
-
-.about-text h3 {
-  font-size: 2.2rem;
-  margin-bottom: 1.5rem;
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-weight: 700;
-}
-
-.about-text p {
-  font-size: 1.1rem;
-  margin-bottom: 1.5rem;
-  color: var(--text-secondary);
-  line-height: 1.8;
-}
-
-.about-image {
-  background: var(--gradient-primary);
-  height: 450px;
-  border-radius: var(--border-radius-lg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 2.5rem;
-  font-weight: 600;
-  position: relative;
-  overflow: hidden;
-  box-shadow: var(--shadow-xl);
-}
-
-.about-image::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
-  background-size: 20px 20px;
-  opacity: 0.3;
-}
-
-/* Services Section améliorée */
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 2.5rem;
-  margin-top: 4rem;
-}
-
-.service-card {
-  background: var(--bg-primary);
-  padding: 2.5rem;
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-md);
-  transition: var(--transition);
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.service-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: var(--gradient-primary);
-  transform: scaleX(0);
-  transition: var(--transition);
-}
-
-.service-card:hover::before {
-  transform: scaleX(1);
-}
-
-.service-card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-xl);
-}
-
-.service-icon {
-  width: 90px;
-  height: 90px;
-  background: var(--gradient-primary);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 2rem;
-  color: white;
-  font-size: 2.2rem;
-  position: relative;
-  transition: var(--transition);
-}
-
-.service-card:hover .service-icon {
-  transform: scale(1.1) rotate(5deg);
-}
-
-.service-card h4 {
-  font-size: 1.4rem;
-  margin-bottom: 1rem;
-  color: var(--text-primary);
-  font-weight: 600;
-}
-
-.service-card p {
-  color: var(--text-secondary);
-  line-height: 1.7;
-  font-size: 1rem;
-}
-
-/* Contact Section améliorée */
-.contact {
-  background: var(--bg-secondary);
-  position: relative;
-}
-
-.contact-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 5rem;
-}
-
-.contact-info h3 {
-  font-size: 2.2rem;
-  margin-bottom: 2rem;
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-weight: 700;
-}
-
-.contact-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  padding: 1rem;
-  background: var(--bg-primary);
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow-sm);
-  transition: var(--transition);
-}
-
-.contact-item:hover {
-  transform: translateX(5px);
-  box-shadow: var(--shadow-md);
-}
-
-.contact-item i {
-  width: 50px;
-  height: 50px;
-  background: var(--gradient-primary);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  margin-right: 1.5rem;
-  font-size: 1.2rem;
-  flex-shrink: 0;
-}
-
-.contact-form {
-  background: var(--bg-primary);
-  padding: 2.5rem;
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-lg);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.form-group {
-  margin-bottom: 2rem;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 0.8rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  font-size: 0.95rem;
-}
-
-.form-group input,
-.form-group textarea {
-  width: 100%;
-  padding: 1rem;
-  border: 2px solid #e2e8f0;
-  border-radius: var(--border-radius);
-  font-size: 1rem;
-  transition: var(--transition);
-  background: var(--bg-primary);
-  color: var(--text-primary);
-}
-
-.form-group input:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-.form-group textarea {
-  resize: vertical;
-  min-height: 120px;
-}
-
-.submit-btn {
-  background: var(--gradient-primary);
-  color: white;
-  padding: 1.2rem 2.5rem;
-  border: none;
-  border-radius: var(--border-radius);
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: var(--transition);
-  width: 100%;
-  position: relative;
-  overflow: hidden;
-}
-
-.submit-btn::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
+.enter-button img {
+  width: 100%; /* L'image remplit le bouton */
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
-  transition: var(--transition);
+  object-fit: contain; /* L'image s'adapte sans être coupée */
+  filter: contrast(
+    1.2
+  ); /* Améliore le contraste de l'image comme les autres icônes */
+  transition: transform 0.2s ease-in-out; /* Transition pour l'effet de survol */
 }
 
-.submit-btn:hover::before {
-  left: 100%;
+.enter-button:hover {
+  transform: scale(
+    1.1
+  ); /* Agrandit légèrement au survol comme les autres icônes */
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.95
+  ); /* Légèrement plus opaque au survol comme les autres icônes */
 }
 
-.submit-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+.enter-button:hover img {
+  transform: scale(
+    1.05
+  ); /* L'image à l'intérieur s'agrandit aussi comme les autres icônes */
 }
 
-/* Footer amélioré */
-footer {
-  background: var(--bg-dark);
-  color: white;
-  padding: 4rem 0 2rem;
-  text-align: center;
-  position: relative;
+/* Classe pour rendre le bouton visible */
+.enter-button.visible {
+  opacity: 1; /* Rend l'élément complètement opaque */
+  pointer-events: auto; /* Active les interactions de la souris */
 }
 
-footer::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: var(--gradient-primary);
-}
-
-.footer-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
-}
-
-.footer-links {
-  display: flex;
-  justify-content: center;
-  gap: 3rem;
-  margin-bottom: 2.5rem;
-}
-
-.footer-links a {
-  color: #cbd5e0;
-  text-decoration: none;
-  transition: var(--transition);
-  font-weight: 500;
-  position: relative;
-}
-
-.footer-links a::after {
-  content: "";
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: var(--gradient-primary);
-  transition: var(--transition);
-}
-
-.footer-links a:hover::after {
-  width: 100%;
-}
-
-.footer-links a:hover {
-  color: white;
-}
-
-.footer-bottom {
-  border-top: 1px solid #4a5568;
-  padding-top: 2rem;
-  opacity: 0.8;
-  font-size: 0.9rem;
-}
-
-/* Responsive Design amélioré */
+/* Media queries pour la responsivité sur les petits écrans (mobiles) */
 @media (max-width: 768px) {
-  .nav-links {
-    display: none;
+  .video-container {
+    width: 95vw; /* Plus large sur mobile */
+    max-width: none; /* Pas de largeur maximale sur mobile */
   }
-
-  .mobile-menu {
-    display: flex;
+  .icon-sidebar {
+    right: 15px; /* Marge fixe de 15px sur mobile (ajustée) */
+    gap: 0.75rem; /* Espacement réduit */
   }
-
-  .hero {
-    padding: 120px 0 80px;
+  .icon-item {
+    padding: 0.4rem;
+    width: 60px; /* Taille des icônes réduite sur mobile */
+    height: 60px;
   }
-
-  .about-content,
-  .contact-content {
-    grid-template-columns: 1fr;
-    gap: 3rem;
+  .icon-item img {
+    width: 100%; /* L'image remplit l'élément parent sur mobile */
+    height: 100%;
   }
-
-  .services-grid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+  .enter-button {
+    right: 15px; /* Marge fixe de 15px sur mobile */
+    top: calc(50% + 30px + 0.75rem); /* Ajusté pour mobile */
+    width: 60px; /* Taille du bouton "Entrez" réduite sur mobile */
+    height: 60px;
   }
-
-  .footer-links {
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .service-card,
-  .contact-form {
-    padding: 2rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .container {
-    padding: 0 1rem;
-  }
-
-  .hero-content {
-    padding: 0 1rem;
-  }
-
-  .service-card,
-  .contact-form {
-    padding: 1.5rem;
-  }
-}
-
-/* Animations améliorées */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes fadeInRight {
-  from {
-    opacity: 0;
-    transform: translateX(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-}
-
-.fade-in-up {
-  animation: fadeInUp 0.8s ease-out;
-}
-
-.fade-in-left {
-  animation: fadeInLeft 0.8s ease-out;
-}
-
-.fade-in-right {
-  animation: fadeInRight 0.8s ease-out;
-}
-
-.float {
-  animation: float 3s ease-in-out infinite;
-}
-
-.pulse {
-  animation: pulse 2s ease-in-out infinite;
-}
-
-/* Scrollbar personnalisée */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--gradient-primary);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--secondary-color);
-}
-
-/* Sélection de texte */
-::selection {
-  background: var(--primary-color);
-  color: white;
-}
-
-/* Focus visible pour l'accessibilité */
-*:focus-visible {
-  outline: 2px solid var(--primary-color);
-  outline-offset: 2px;
 }
